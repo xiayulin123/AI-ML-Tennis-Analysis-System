@@ -3,3 +3,5 @@ training/tennis-ball-detection-6/tennis-ball-detection-6/*
 yolov8x.pt
 models/*
 training/keypoints_model_3/*
+training/data/*
+*.zip
