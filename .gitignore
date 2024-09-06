@@ -5,3 +5,4 @@ models/*
 training/keypoints_model_3/*
 training/data/*
 *.zip
+utils/__pycache__/*
