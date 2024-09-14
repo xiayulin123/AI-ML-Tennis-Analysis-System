@@ -8,10 +8,10 @@ def main():
     video_frames = read_video(input_video_path)
 
     # Detecting players
-    player_tracker = PlayerTracker(model_path='yolov8x')
+    player_tracker = PlayerTracker(model_path='yolov8x.pt')
     ball_tracker = BallTracker(model_path="models/last.pt")
-    player_detections = player_tracker.detect_frames(video_frames, read_from_stub=True, stub_path="tracker_stubs/player_detections.pkl")
-    ball_detections = ball_tracker.detect_frames(video_frames, read_from_stub=False, stub_path="tracker_stubs/ball_detections.pkl")
+    player_detections = player_tracker.detect_frames(video_frames, read_from_stub=False, stub_path="tracker_stubs/player_detections.pkl")
+    ball_detections = ball_tracker.detect_frames(video_frames, read_from_stub=True, stub_path="tracker_stubs/ball_detections.pkl")
 
     # Draw the output and box
     video_frames = player_tracker.draw_boxes(video_frames, player_detections)
