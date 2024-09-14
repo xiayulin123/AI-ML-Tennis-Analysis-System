@@ -47,7 +47,7 @@ class BallTracker:
                 x1, y1, x2, y2 = box
                 cv2.putText(frame, f"Ball ID: {track_id}", (int(box[0]) - 20, int(box[1] - 10)), cv2.FONT_HERSHEY_COMPLEX, 0.9, (0, 0, 255), 2)
                 # 0 index minimum of x, 1 is minimum of y
-                cv2.rectangle(frame, (int(x1), int(y1), int(x2), int(y2)), (0, 255, 0), 2)
+                cv2.rectangle(frame, (int(x1), int(y1), int(x2), int(y2)), (255, 0, 0), 2)
 
             output_frame.append(frame)
         return output_frame
