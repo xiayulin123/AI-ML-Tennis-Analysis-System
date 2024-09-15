@@ -6,7 +6,7 @@ import cv2
 
 class CourtLineDetector:
     def __init__(self, model_path):
-        self.model = models.resnet50(pretrainer=False)
+        self.model = models.resnet50(pretrained=False)
         self.model.fc = torch.nn.Linear(self.model.fc.in_features, 14*2)
         self.model.load_state_dict(torch.load(model_path, map_location='cpu'))
 
@@ -25,12 +25,28 @@ class CourtLineDetector:
         with torch.no_grad():
             outputs = self.model(image_tensor)
 
-        keypoints = outputs.squeeze().tolist().cpu().numpy()
+        keypoints = outputs.squeeze().cpu().numpy()
 
         original_h, original_w = img_rgb.shape[:2]
 
         keypoints[::2] *= original_w/244.0
         keypoints[1::2] *= original_h/244.0
 
-        return keypoints
+        return keypoints.tolist()
+    
+    def draw_keypoint(self, image, keypoints):
+        for i in range(0, len(keypoints), 2):
+            x = int(keypoints[i])
+            y = int(keypoints[i+1])
+            cv2.putText(image, str(i/2), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 2)
+            cv2.circle(image, (x,y+10), 5, (0,0,255), -1)
 
+        return image
+    
+    def draw_keypoints_on_video(self, video_frame, keypoints):
+        output_video_frames = []
+        for frame in video_frame:
+            frame = self.draw_keypoint(frame, keypoints)
+            output_video_frames.append(frame)
+        
+        return output_video_frames
