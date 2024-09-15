@@ -18,7 +18,8 @@ def main():
 
     player_detections = player_tracker.detect_frames(video_frames, read_from_stub=True, stub_path="tracker_stubs/player_detections.pkl")
     ball_detections = ball_tracker.detect_frames(video_frames, read_from_stub=True, stub_path="tracker_stubs/ball_detections.pkl")
-
+    ball_detections = ball_tracker.interpolate_ball_position(ball_detections)
+    
     # Draw the output and box
     video_frames = player_tracker.draw_boxes(video_frames, player_detections)
     video_frames = ball_tracker.draw_boxes(video_frames, ball_detections)
