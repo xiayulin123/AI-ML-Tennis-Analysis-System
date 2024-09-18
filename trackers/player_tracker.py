@@ -22,24 +22,25 @@ class PlayerTracker:
         distances = []
 
         # Iterate over the list of player detections
-        for detection in player_detections_first_frame:
-            if isinstance(detection, dict):
-                # Iterate over the dictionary's key-value pairs (track_id and bbox)
-                for track_id, bbox in detection.items():
-                    # Get the player center
-                    player_center = get_center_of_bbox(bbox)
-                    
-                    min_distance = float('inf')
-                    # Calculate the minimum distance to keypoints
-                    for i in range(0, len(keypoints), 2):
-                        keypoint = (keypoints[i], keypoints[i+1])
-                        # Calculate the distance between player_center and keypoint
-                        distance = measure_distance(player_center, keypoint)
-                        if distance < min_distance:
-                            min_distance = distance
+        for track_id, bbox  in player_detections_first_frame.items():
+            
+        # Iterate over the dictionary's key-value pairs (track_id and bbox)
+        # for in detection.items():
+            # Get the player center
+            player_center = get_center_of_bbox(bbox)
+            
+            min_distance = float('inf')
 
-                    # Append (track_id, min_distance) as a tuple to the distances list
-                    distances.append((track_id, min_distance))
+            # Calculate the minimum distance to keypoints
+            for i in range(0, len(keypoints), 2):
+                keypoint = (keypoints[i], keypoints[i+1])
+                # Calculate the distance between player_center and keypoint
+                distance = measure_distance(player_center, keypoint)
+                if distance < min_distance:
+                    min_distance = distance
+
+            # Append (track_id, min_distance) as a tuple to the distances list
+            distances.append((track_id, min_distance))
         
         # Sort the distances in ascending order by the second element (min_distance)
         distances.sort(key=lambda x: x[1])
