@@ -22,7 +22,7 @@ def main():
     ball_detections = ball_tracker.interpolate_ball_position(ball_detections)
 
     # choose the players
-    player_detections = player_tracker.choose_player(court_keypoints, player_detections)
+    player_detections = player_tracker.filtered_players(court_keypoints, player_detections)
 
     # Draw the output and box
     video_frames = player_tracker.draw_boxes(video_frames, player_detections)

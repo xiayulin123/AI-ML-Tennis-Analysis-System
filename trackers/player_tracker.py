@@ -20,20 +20,23 @@ class PlayerTracker:
 
     def choose_player(self, keypoints, player_detections_first_frame):
         distances = []
-
-        # Iterate over the list of player detections
-        for track_id, bbox  in player_detections_first_frame.items():
-            
+        if isinstance(player_detections_first_frame, list):
+            combined_player_detections = {}
+            for detection in player_detections_first_frame:
+                combined_player_detections.update(detection)
+        else:
+            combined_player_detections = player_detections_first_frame
+        # Ensure that player_detections_first_frame is a dictionary
         # Iterate over the dictionary's key-value pairs (track_id and bbox)
-        # for in detection.items():
+        for track_id, bbox in combined_player_detections.items():
             # Get the player center
             player_center = get_center_of_bbox(bbox)
-            
+
             min_distance = float('inf')
 
             # Calculate the minimum distance to keypoints
             for i in range(0, len(keypoints), 2):
-                keypoint = (keypoints[i], keypoints[i+1])
+                keypoint = (keypoints[i], keypoints[i + 1])
                 # Calculate the distance between player_center and keypoint
                 distance = measure_distance(player_center, keypoint)
                 if distance < min_distance:
@@ -41,7 +44,7 @@ class PlayerTracker:
 
             # Append (track_id, min_distance) as a tuple to the distances list
             distances.append((track_id, min_distance))
-        
+
         # Sort the distances in ascending order by the second element (min_distance)
         distances.sort(key=lambda x: x[1])
 
@@ -89,10 +92,10 @@ class PlayerTracker:
 
     def  draw_boxes(self, video_frames, player_detections):
         output_frame = []
+        print(f"here is the thing: {player_detections}")
 
         for frame, player_dict in zip(video_frames, player_detections): #zip help find 2 things in 2 paths same time
             # Draw the bounding box
-
             for track_id, box in player_dict.items():
                 x1, y1, x2, y2 = box
                 cv2.putText(frame, f"Player ID: {track_id}", (int(box[0]), int(box[1] - 10)), cv2.FONT_HERSHEY_COMPLEX, 0.9, (0, 0, 255), 2)
