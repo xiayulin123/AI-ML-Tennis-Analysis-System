@@ -92,7 +92,7 @@ class PlayerTracker:
 
     def  draw_boxes(self, video_frames, player_detections):
         output_frame = []
-        print(f"here is the thing: {player_detections}")
+        # print(f"here is the thing: {player_detections}")
 
         for frame, player_dict in zip(video_frames, player_detections): #zip help find 2 things in 2 paths same time
             # Draw the bounding box
